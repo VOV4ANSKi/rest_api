@@ -19,5 +19,10 @@ router.post("/signin", usersController.authenticate);
 router.get("/logout", usersController.logout);
 router.get("/info", usersController.info);
 router.get("/signin/new_token", usersController.refresh);
+router.get("/form", (req, res) => {
+
+  res.sendFile("./public/form.html", { root: "./" });
+
+});
 
 module.exports = router;
