@@ -1,8 +1,8 @@
 const { Sequelize, Model, DataTypes } = require("sequelize"),
   passportLocalSequelize = require("passport-local-sequelize");
 
-const sequelize = new Sequelize("vov4ikDB", "root", "sc62_)#", {
-  host: "localhost",
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
   dialect: "mysql"
 
 });

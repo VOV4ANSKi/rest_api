@@ -54,8 +54,9 @@ module.exports = {
       
       } else {
       
-        let token = jwt.sign({ id: user.id }, "sc15243", {expiresIn: "10m"});
-        let refresh = jwt.sign({ id: user.id, hash: user.hash.slice(0, 11) }, "sc34251", {expiresIn: "1d"});
+        let token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "10m"});
+        let refresh = jwt.sign({ id: user.id, hash: user.hash.slice(0, 11) },
+          process.env.REFRESH_TOKEN_SECRET, {expiresIn: "1d"});
         
         req.login(user, async error => {
         
@@ -109,7 +110,7 @@ module.exports = {
       
         req.headers.token,
         
-        "sc15243",
+        process.env.ACCESS_TOKEN_SECRET,
         
         (error, payload) => {
         
@@ -120,7 +121,7 @@ module.exports = {
           
           } else {
           
-            User.findOne({ id: payload.id })
+            User.findOne({ where: { id: payload.id } })
             
               .then(user => {
               
@@ -174,7 +175,7 @@ module.exports = {
       
         req.query.token,
         
-        "sc34251",
+        process.env.REFRESH_TOKEN_SECRET,
         
         (error, payload) => {
         
@@ -185,7 +186,7 @@ module.exports = {
           
           } else {
           
-            User.findOne({ id: payload.id })
+            User.findOne({ where: { id: payload.id } })
             
               .then(user => {
               
@@ -196,8 +197,8 @@ module.exports = {
                 
                 } else {
                 
-                  let token = jwt.sign({ id: user.id }, "sc15243", {expiresIn: "10m"});
-                  let refresh = jwt.sign({ id: user.id }, "sc34251", {expiresIn: "1d"});
+                  let token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "10m"});
+                  let refresh = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "1d"});
                   res.json({ error: false, token, refresh });
                 
                 }

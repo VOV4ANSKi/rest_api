@@ -1,6 +1,8 @@
 const express = require("express"),
   cookies = require("cookie-parser"),
   session = require("express-session"),
+  redisStore = require("connect-redis")(session),
+  redis = require("redis"),
   passport = require("passport"),
   randToken = require("rand-token"),
   rewriteMethods = require("method-override"),
@@ -25,11 +27,17 @@ app.use(express.static("public"));
 
 app.use(rewriteMethods("_method", {methods: ["GET", "POST"]}));
 
-app.use(cookies("secret"));
+app.use(cookies(process.env.COOKIE_SECRET));
 
 app.use(session({
 
-  secret: "secret",
+  store: new redisStore({
+  
+    client: redis.createClient()
+    
+  }),
+
+  secret: process.env.COOKIE_SECRET,
   
   cookie: {
     maxAge: 4000000
