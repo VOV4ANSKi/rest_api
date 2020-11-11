@@ -121,7 +121,7 @@ module.exports = {
     
     } else if (!req.files.file) {
     
-      res.status(httpStatus.PRECONDITION_FAILED)
+      res.status(httpStatus.BAD_REQUEST)
         .json({ error: true, message: "You forgot to upload a file :(" });
     
     } else {
